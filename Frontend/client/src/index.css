@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    @apply bg-slate-50 text-slate-800;
+  }
+  #root { @apply min-h-screen; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-gray-100; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap;
+  }
+  .btn-primary { @apply btn bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500 shadow-sm hover:shadow-md active:scale-[0.98] px-5 py-2.5 text-sm; }
+  .btn-secondary { @apply btn bg-slate-100 hover:bg-slate-200 text-slate-700 focus:ring-slate-400 px-5 py-2.5 text-sm; }
+  .btn-danger { @apply btn bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 px-5 py-2.5 text-sm; }
+  .btn-success { @apply btn bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 px-5 py-2.5 text-sm; }
+  .btn-outline { @apply btn border border-primary-200 text-primary-700 hover:bg-primary-50 focus:ring-primary-500 px-5 py-2.5 text-sm; }
+  .btn-ghost { @apply btn text-slate-600 hover:bg-slate-100 focus:ring-slate-400 px-5 py-2.5 text-sm; }
+  .btn-sm { @apply !px-3 !py-1.5 !text-xs; }
+  .btn-lg { @apply !px-8 !py-3.5 !text-base; }
+  .btn-icon { @apply btn p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 focus:ring-slate-400 rounded-lg; }
+
+  .input { @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-50 transition-all duration-200 text-sm shadow-[0_1px_1px_rgba(0,0,0,0.02)]; }
+  .input-error { @apply !border-red-400 focus:!border-red-500 focus:!ring-red-100; }
+  .label { @apply block text-sm font-semibold text-slate-700 mb-1.5; }
+  .error-text { @apply text-xs text-red-500 mt-1; }
+
+  .card { @apply bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden p-5; }
+  .card-hover { @apply card hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer; }
+
+  .badge { @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold; }
+  .badge-lost { @apply badge bg-red-100 text-red-700; }
+  .badge-found { @apply badge bg-emerald-100 text-emerald-700; }
+  .badge-pending { @apply badge bg-amber-100 text-amber-700; }
+  .badge-approved { @apply badge bg-green-100 text-green-700; }
+  .badge-resolved { @apply badge bg-blue-100 text-blue-700; }
+  .badge-rejected { @apply badge bg-red-100 text-red-700; }
+  .badge-disputed { @apply badge bg-orange-100 text-orange-700; }
+
+  .gradient-text { @apply bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent; }
+
+  .avatar { @apply rounded-full object-cover flex-shrink-0; }
+  .avatar-sm { @apply avatar w-8 h-8; }
+  .avatar-md { @apply avatar w-10 h-10; }
+  .avatar-lg { @apply avatar w-14 h-14; }
+
+  .sidebar-link { @apply flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 hover:bg-primary-50 hover:text-primary-700 text-gray-600; }
+  .sidebar-link-active { @apply sidebar-link bg-primary-50 text-primary-700 font-semibold; }
+
+  .spinner { @apply animate-spin rounded-full border-2 border-gray-200 border-t-primary-600; }
+
+  .page-title { @apply text-2xl md:text-3xl font-bold text-slate-900 tracking-tight; }
+  .section-title { @apply text-xl md:text-2xl font-bold text-slate-900 tracking-tight; }
+}
+
+.animate-fade-in { animation: fadeIn 0.35s ease-in-out; }
+.animate-slide-up { animation: slideUp 0.35s ease-out; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* ========== ANIMATED DIAMOND GRID BACKGROUND ========== */
+.diamond-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Grid lines - subtle moving grid */
+.diamond-bg::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(45deg, transparent 48.5%, rgba(251,146,60,0.12) 48.5%, rgba(251,146,60,0.12) 51.5%, transparent 51.5%),
+    linear-gradient(-45deg, transparent 48.5%, rgba(99,102,241,0.10) 48.5%, rgba(99,102,241,0.10) 51.5%, transparent 51.5%);
+  background-size: 60px 60px;
+  animation: diamondGridDrift 20s linear infinite;
+}
+
+/* Orange warm glow overlay */
+.diamond-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(251,146,60,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 350px at 80% 70%, rgba(251,146,60,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 60% 20%, rgba(99,102,241,0.10) 0%, transparent 70%);
+  animation: diamondGlowShift 12s ease-in-out infinite alternate;
+}
+
+@keyframes diamondGridDrift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+@keyframes diamondGlowShift {
+  0%   { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Floating diamonds */
+.diamond-bg .diamond {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border: 2.5px solid rgba(99, 102, 241, var(--opacity));
+  transform: rotate(45deg);
+  animation: diamondFloat var(--duration) var(--delay) linear infinite;
+  border-radius: 4px;
+}
+
+.diamond-bg .diamond.filled {
+  background: rgba(99, 102, 241, calc(var(--opacity) * 0.5));
+}
+
+.diamond-bg .diamond.orange {
+  border-color: rgba(251, 146, 60, var(--opacity));
+}
+
+.diamond-bg .diamond.orange.filled {
+  background: rgba(251, 146, 60, calc(var(--opacity) * 0.5));
+}
+
+.diamond-bg .diamond.orange.glow {
+  box-shadow: 0 0 18px rgba(251, 146, 60, calc(var(--opacity) * 0.8));
+}
+
+.diamond-bg .diamond.glow {
+  box-shadow: 0 0 18px rgba(99, 102, 241, calc(var(--opacity) * 0.8));
+}
+
+@keyframes diamondFloat {
+  0%   { transform: rotate(45deg) translate(0, 0) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: rotate(45deg) translate(var(--tx), var(--ty)) scale(var(--endScale)); opacity: 0; }
+}
+
+/* Pulsing diamond clusters */
+.diamond-bg .diamond-pulse {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid rgba(99, 102, 241, 0.20);
+  transform: rotate(45deg);
+  animation: diamondPulse 4s var(--delay) ease-in-out infinite;
+  border-radius: 3px;
+}
+
+.diamond-bg .diamond-pulse.orange {
+  border-color: rgba(251, 146, 60, 0.22);
+  animation-name: diamondPulseOrange;
+}
+
+@keyframes diamondPulse {
+  0%, 100% { transform: rotate(45deg) scale(0.8); opacity: 0.4; border-color: rgba(99, 102, 241, 0.15); }
+  50%      { transform: rotate(45deg) scale(1.2); opacity: 1;   border-color: rgba(99, 102, 241, 0.35); }
+}
+
+@keyframes diamondPulseOrange {
+  0%, 100% { transform: rotate(45deg) scale(0.8); opacity: 0.4; border-color: rgba(251, 146, 60, 0.15); }
+  50%      { transform: rotate(45deg) scale(1.2); opacity: 1;   border-color: rgba(251, 146, 60, 0.40); }
+}
+
+/* Sparkle dots */
+.diamond-bg .sparkle-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: rgba(99, 102, 241, 0.6);
+  border-radius: 50%;
+  animation: diamondSparkle 3s var(--delay) ease-in-out infinite;
+}
+
+.diamond-bg .sparkle-dot.orange {
+  background: rgba(251, 146, 60, 0.65);
+}
+
+@keyframes diamondSparkle {
+  0%, 100% { transform: scale(0); opacity: 0; }
+  50%      { transform: scale(1); opacity: 1; }
+}
+
+/* ========== SECTION-LEVEL DIAMOND BG (absolute, inside relative sections) ========== */
+.diamond-section-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Moving grid lines */
+.diamond-section-bg .dsb-grid {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(45deg, transparent 48.5%, rgba(251,146,60,0.10) 48.5%, rgba(251,146,60,0.10) 51.5%, transparent 51.5%),
+    linear-gradient(-45deg, transparent 48.5%, rgba(99,102,241,0.08) 48.5%, rgba(99,102,241,0.08) 51.5%, transparent 51.5%);
+  background-size: 55px 55px;
+  animation: dsbGridDrift 22s linear infinite;
+}
+
+@keyframes dsbGridDrift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(55px, 55px); }
+}
+
+/* Pulsing diamonds */
+.diamond-section-bg .dsb-pulse {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid var(--dsb-color);
+  border-radius: 3px;
+  animation: dsbPulse 4s var(--delay) ease-in-out infinite;
+}
+
+@keyframes dsbPulse {
+  0%, 100% { transform: rotate(45deg) scale(0.75); opacity: 0.35; }
+  50%      { transform: rotate(45deg) scale(1.2);  opacity: 1; }
+}
+
+/* Sparkle dots */
+.diamond-section-bg .dsb-sparkle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: var(--dsb-color);
+  border-radius: 50%;
+  animation: dsbSparkle 3s var(--delay) ease-in-out infinite;
+}
+
+@keyframes dsbSparkle {
+  0%, 100% { transform: scale(0); opacity: 0; }
+  50%      { transform: scale(1.2); opacity: 1; }
+}
+
+/* Sections that use the diamond bg — need relative + overflow-hidden + content above z-0 */
+.dsb-section {
+  position: relative;
+  overflow: hidden;
+}
+.dsb-section > *:not(.diamond-section-bg) {
+  position: relative;
+  z-index: 1;
+}
