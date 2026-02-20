@@ -12,7 +12,10 @@ dotenv.config();
 
 const isDev = process.env.NODE_ENV === 'development';
 const allowedOrigins = (() => {
-  const origins = [];
+  const origins = [
+    'https://campus-lost-found-puce.vercel.app',
+    'https://campus-lost-found.vercel.app',
+  ];
   if (process.env.CLIENT_URL) origins.push(process.env.CLIENT_URL);
   if (isDev) {
     origins.push('http://localhost:5173', 'http://localhost:5174');
@@ -24,6 +27,8 @@ const corsOrigin = (origin, callback) => {
   // Allow non-browser requests (no Origin header)
   if (!origin) return callback(null, true);
   if (allowedOrigins.includes(origin)) return callback(null, true);
+  // Allow vercel preview deployments
+  if (origin && origin.includes('vercel.app')) return callback(null, true);
   return callback(new Error(`CORS blocked for origin: ${origin}`));
 };
 
