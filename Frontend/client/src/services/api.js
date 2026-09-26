@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+const configuredApiUrl = import.meta.env.VITE_API_URL;
+const normalizedApiUrl = configuredApiUrl?.replace(/\/+$/, '');
+const apiBaseUrl = normalizedApiUrl
+  ? normalizedApiUrl.endsWith('/api') ? normalizedApiUrl : `${normalizedApiUrl}/api`
+  : '/api';
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: apiBaseUrl,
   withCredentials: true,
   timeout: 15000,
 });
@@ -33,7 +39,7 @@ API.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('refreshToken');
         const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL || '/api'}/auth/refresh-token`,
+          `${apiBaseUrl}/auth/refresh-token`,
           { refreshToken }
         );
         localStorage.setItem('token', data.token);
